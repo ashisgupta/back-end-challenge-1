@@ -13,12 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+//Custom Routes with overridden methods for api token
 Route::post('register', 'Auth\RegisterController@register');
 Route::post('login', 'Auth\LoginController@login');
-Route::post('logout', 'Auth\LoginController@logout');
 
-Route::resource('products', 'Api\\ProductsController', ['except' => ['create', 'edit']]);
-Route::get('productsearch/{searchterm}', 'Api\\ProductsController@productsearch');
+//Authentication check
+Route::group(['middleware' => 'auth:api'], function() {
+	Route::post('logout', 'Auth\LoginController@logout');
+	//Product CRUD API Routes
+	Route::resource('products', 'Api\\ProductsController', ['except' => ['create', 'edit']]);
+	Route::get('productsearch/{searchterm}', 'Api\\ProductsController@productsearch');
+});
