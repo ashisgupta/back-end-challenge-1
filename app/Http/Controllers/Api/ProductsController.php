@@ -47,6 +47,7 @@ class ProductsController extends Controller
             return response()->json(['errors' => $validator->errors()])->setStatusCode(422);
         }
         $product = Product::create($request->all());
+        //$product->addToIndex(); //add product to elasticsearch 
 
         return response()->json($product, 201);
     }
@@ -119,8 +120,41 @@ class ProductsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function productsearch($searchterm)
+    public function productsearch(Request $request,$searchterm)
     {
+        //elasticsearch code with pagination
+        // $paginate = 25;
+        // $page = $request->has("page") ? $request["page"] : 1;
+        // $offSet = ($page * $paginate) - $paginate;
+        // $json = '{
+        //                 "query": {
+        //                   "multi_match" : {
+        //                     "query": "'.$searchterm.'",
+        //                     "fields": ["name", "category"],
+        //                     "fuzziness": "2"
+        //                   }
+        //                 },
+        //                 "size":'.(int) $paginate.',
+        //                 "from":'.(int) $offSet.',
+        //                 "aggs": {
+        //                   "group_by_name": {
+        //                     "terms": {
+        //                       "field": "name.keyword"
+
+        //                     }
+        //                   }
+        //                 }
+        //               }';
+        // $params = [
+        //     'index' => 'products',
+        //     'type' => 'products_type',
+        //     'body' => $json
+        // ];
+        // $productsearched = Product::complexSearch($params);
+        // $productsForCurrentPage = Product::whereIn("id", array_column($productsearched->toArray(), "id"))->get();
+        // $products = new \Illuminate\Pagination\LengthAwarePaginator($productsForCurrentPage, $productsearched->totalHits(), $paginate, $page);
+        // $products->setPath('search?search='.$searchterm);
+        //Search without elasticsearch
         $products = Product::where("name", "like", "%".$searchterm."%")
                             ->orWhere("category", "like", "%".$searchterm."%")
                             ->latest()->paginate(25);
