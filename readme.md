@@ -6,14 +6,15 @@ Steps needed to get application up and running
 
 * Challenge is to build a product add, edit, delete, view and list/search api's.
 * Description: 	An application where the User’s can register with email and password. 
-*				User have to login using there registered email and password to get API Token 
-*				Product add, edit. delete, view and list/search api's can be used with the API Token
+* User have to login using there registered email and password to get API Token 
+* Product add, edit. delete, view and list/search api's can be used with the API Token 
+* (Send Header Accept: appllication/json)
 *
-*				The Products table have required fields name. image url, available sizes, price and category.
-*               Here, Name is kept unique and all other fields are compulsory.
-*               Url should be valid URL.
+* The Products table have required fields name. image url, available sizes, price and category.
+* Here, Name is kept unique and all other fields are compulsory.
+* Url should be valid URL.
 *
-* Version       1.0
+* Version 1.0
 
 ### How do I get set up? ###
 
@@ -24,6 +25,8 @@ Steps needed to get application up and running
 * Create a database and add the name in .env file.
 * Create a virtual host and point it into /public folder under the project.
 * Give appropiate permission to storage and the bootstrap/cache directories.
+* File Caching is used(for list of products), can be changed from configuration to redis. By default cache is set to file.
+* Elasticsearch is implemented for Search (Code is commented as the service is needed).
 
 ### Who do I talk to? ###
 
